@@ -4,8 +4,6 @@ from pprint import pprint
 
 
 def generate_random_board():
-    # function returns true if piece
-    # was placed, false otherwise
     def randomly_place_peice(size):
         is_vertical = random.choice([True, False])
         if is_vertical:
@@ -39,7 +37,7 @@ def initialize_guesses():
     return [(x, y) for x in range(10) for y in range(10)]
 
 
-def generate_random_guess():
+def generate_random_guess(guesses):
     coords = random.choice(guesses)
     guesses.remove(coords)
     return coords
@@ -49,8 +47,15 @@ def generate_random_guess():
 # if the last guess was a hit, then the next guess should be
 # adjecent to the last guess
 def guess_adjecent_after_hit():
-    pass
+    if was_last_guess_a_hit:
+        # generate adjecent guess
 
+        pass
+    else:
+        coords = random.choice(guesses)
+        guesses.remove(coords)
+        return coords
+     
 
 def is_game_over(board, guesses):
     for r in range(10):
@@ -59,18 +64,22 @@ def is_game_over(board, guesses):
                 return False
     return True
 
-
-
-if __name__ == '__main__':
+def play_with_random_guess(n=1_000):
     scores = []
-    for _ in range(10_000):
+    for _ in range(n):
         board = generate_random_board()
         guesses = initialize_guesses()
         guess_count = 0
         while not is_game_over(board, guesses):
-            x, y = generate_random_guess()
+            generate_random_guess(guesses)
             guess_count += 1
         scores.append(guess_count)
+    return scores
+
+
+
+if __name__ == '__main__':
+    scores = play_with_random_guess(n=1_000)
 
     print(f'{min(scores)=}')
     print(f'{scores.count(100)=}')
