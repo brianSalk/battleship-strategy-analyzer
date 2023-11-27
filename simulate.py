@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from pprint import pprint
 
 
@@ -61,14 +62,16 @@ def is_game_over(board, guesses):
 
 
 if __name__ == '__main__':
-    board = generate_random_board()
-    guesses = initialize_guesses()
-    print('Board:')
-    pprint(board)
-    pprint(guesses)
-    guess_count = 0
-    while not is_game_over(board, guesses):
-        x, y = generate_random_guess()
-        print(f'{x=}, {y=}')
-        guess_count += 1
-    print(f'Game over! Guesses: {guess_count}')
+    scores = []
+    for _ in range(10_000):
+        board = generate_random_board()
+        guesses = initialize_guesses()
+        guess_count = 0
+        while not is_game_over(board, guesses):
+            x, y = generate_random_guess()
+            guess_count += 1
+        scores.append(guess_count)
+
+    print(f'{min(scores)=}')
+    print(f'{scores.count(100)=}')
+    print('Average score: ', np.mean(scores))
