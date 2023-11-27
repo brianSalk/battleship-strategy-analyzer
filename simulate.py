@@ -16,7 +16,7 @@ def generate_random_board():
                 spaces_are_empty = all(board[x][y] == 0 for x, y in ship)
 
         else:
-            x, y = random.randint(0, 9-size+1), random.randint(0, 9-size+1)
+            x, y = random.randint(0, 9-size+1), random.randint(0, 9)
             ship = [[x+i, y] for i in range(size)]
             spaces_are_empty = all(board[x][y] == 0 for x, y in ship)
             while not spaces_are_empty:
@@ -46,16 +46,14 @@ def generate_random_guess(guesses):
 # if the last guess was a hit. 
 # if the last guess was a hit, then the next guess should be
 # adjecent to the last guess
-def guess_adjecent_after_hit():
-    if was_last_guess_a_hit:
-        # generate adjecent guess
-
-        pass
+def guess_adjecent_after_hit(sinking_ship, last_guess):
+    x,y = last_guess
+    if sinking_ship:
+        # eventually make it so if a hit was close to the edge of the board
+        # the next guess will be towards the center of the board
+        
     else:
-        coords = random.choice(guesses)
-        guesses.remove(coords)
-        return coords
-     
+        generate_random_guess(guesses) 
 
 def is_game_over(board, guesses):
     for r in range(10):
