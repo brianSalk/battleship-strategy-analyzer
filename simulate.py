@@ -31,14 +31,19 @@ def generate_random_board():
         for x, y in ship:
             board[x][y] = label
         ships[label] = size
+        ship_sizes[label] = size
+        # END randomly_place_peice
     ships = {}
+    ship_sizes = {}
     board = [[0]*10 for _ in range(10)]
-    randomly_place_peice(5,'a')
-    randomly_place_peice(4,'b')
+    randomly_place_peice(5, 'a')
+    randomly_place_peice(4, 'b')
     randomly_place_peice(3, 'c')
     randomly_place_peice(3, 'd')
     randomly_place_peice(2, 'e')
-    return board
+    return board, ships, ship_sizes
+
+
 def initialize_guesses():
     return [(x, y) for x in range(10) for y in range(10)]
 
@@ -48,18 +53,6 @@ def generate_random_guess(guesses):
     guesses.remove(coords)
     return coords
 
-# this function must store the state of the last guess
-# if the last guess was a hit. 
-# if the last guess was a hit, then the next guess should be
-# adjecent to the last guess
-def guess_adjecent_after_hit(sinking_ship, last_guess):
-    x,y = last_guess
-    if sinking_ship:
-        pass    # eventually make it so if a hit was close to the edge of the board
-        # the next guess will be towards the center of the board
-        
-    else:
-        generate_random_guess(guesses) 
 
 def is_game_over(board, guesses):
     for r in range(10):
@@ -68,10 +61,12 @@ def is_game_over(board, guesses):
                 return False
     return True
 
+
 def play_with_random_guess(n=1_000):
     scores = []
     for _ in range(n):
-        board = generate_random_board()
+        # ignore ships and ship_sizes
+        board, _, _ = generate_random_board()
         guesses = initialize_guesses()
         guess_count = 0
         while not is_game_over(board, guesses):
@@ -80,6 +75,9 @@ def play_with_random_guess(n=1_000):
         scores.append(guess_count)
     return scores
 
+def play_game_with_adjacent_guesses_after_hit():
+    hits_stack = []
+    board, ships, ship_sizes = generate_random_board()
 
 
 if __name__ == '__main__':
